@@ -16,7 +16,7 @@ cd cerva.io
 npm install
 
 4. Rulati serverul: 
-npm run
+npm start
 
 5. Accesati-l din browser la:
 http://localhost:8080/
