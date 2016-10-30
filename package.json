@@ -1,0 +1,18 @@
+{
+  "name": "cervaio",
+  "version": "1.0.0",
+  "description": "Cerva base websocket server/client multiplayer three.js game.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "cerva"
+  ],
+  "author": "Floris-Andrei Stoica-Marcu",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^1.5.1",
+    "wrench": "^1.5.9"
+  }
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<title></title>
+		<!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" type="text/css" href="css/loader_bounce.css">
+
+		<script type="text/javascript" src="app/config.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<!--
+		<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="js/core/util/HashMap.js"></script>
+		<script type="text/javascript" src="js/core/util/classy.js"></script>
+		<script type="text/javascript" src="js/core/assetsManager.js"></script>
+		<script type="text/javascript" src="js/core/core.js"></script>
+
+		<script src="js/lib/leap-0.4.3.min.js"></script>
+		<script src="js/lib/leap-plugins-0.1.3.js"></script>
+		-->
+		<script type="text/javascript" src="app/lib/wage.js"></script>
+
+		
+
+    <script>
+    	var iosocket;
+    	var player;
+    	var otherPlayers;
+        $(function(){
+            iosocket = io.connect();
+            player = {"id": 0, 
+            	"x": 0, "y": 0, "z": 0, 
+            	"rot": {"x":1,"y":1,"z":1},
+            	"scale": {"x":1,"y":1,"z":1}      
+            };
+            otherPlayers = [];
+            iosocket.on('connect', function () {
+
+                iosocket.on('connectionId', function(id) {
+                	player.id = id;
+                	$('#incomingChatMessages').append($('<li>Connected #'+player.id+'</li>'));
+                });
+
+                //newPlayer and movePlayer treated in app/main.js
+
+                iosocket.on('message', function(data) {
+                    $('#incomingChatMessages').append($('<li></li>').text("#"+data.id+": "+data.message));
+                });
+
+                iosocket.on('disconnect', function() {
+                    $('#incomingChatMessages').append('<li>Disconnected</li>');
+                });
+            });
+
+            $('#outgoingChatMessage').keypress(function(event) {
+                if(event.which == 13) {
+                    event.preventDefault();
+                    var data = {"id": player.id,"message": $('#outgoingChatMessage').val()}
+                    iosocket.emit("message",data);
+                    $('#incomingChatMessages').append($('<li></li>').text('#'+player.id+': '+$('#outgoingChatMessage').val()));
+                    $('#outgoingChatMessage').val('');
+                }
+            });
+        });
+    </script>
+
+
+	</head>
+	<body>
+		<div id="loader">
+			<img src="img/down_arrow.png">
+			<img src="img/cube.png">
+		</div>
+
+		
+
+		<div id="gui">
+			<div id="chat">
+				Incoming Chat: <ul id="incomingChatMessages"></ul>
+				<br />
+				<input type="text" id="outgoingChatMessage">
+			</div>
+		</div>
+
+		<div id="gameContainer">
+		</div>
+
+		<script type="text/javascript" src="app/assets.js"></script>
+		<script type="text/javascript" src="app/main.js"></script>
+	</body>
+</html>
