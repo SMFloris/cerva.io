@@ -1,3 +1,61 @@
 Baza proiecte CERVA.
 
 Proiect bazat pe Node.js, Socket.io si Wage.js(wrapper Three.js).
+
+Momentan, fiecare jucator conectat poate vorbi intr-un chat. Fiecare jucator are un cub generat random la intrarea pe server care se roteste in jurul axei x.
+
+SETUP
+
+1. Instalati Node.js(nodejs.org).
+
+2. Clonati repo-ul.
+git clone https://github.com/SMFloris/cerva.io.git
+
+3. Instalati dependintele
+cd cerva.io
+npm install
+
+4. Rulati serverul: 
+npm run
+
+5. Accesati-l din browser la:
+http://localhost:8080/
+
+EXPLICATII
+
+Sugerez sa cititi si sa parcurgeti urmatoarele:
+
+1. WebSocket.io si Node.js (https://dzone.com/articles/getting-started-socketio-and)
+2. Exemplele si documentatia Three.js (https://threejs.org/examples/)
+3. WebSocket.io, Node.js si Wage.js(wrapper Three.js) (http://marcostagni.com/threejs-socketio-multiplayer/)
+4. Repo-urile lui Marco Stagni: https://github.com/marco-ponds
+In special repo-ul dodgem si wage.
+
+Am facut in asa fel incat, serverul la momentul rularii "npm run" sa incarce in memorie toate resursele. Acest lucru aduce urmatoarele:
+
+1. Fiecare resursa trebuie sa fie organizata corespunzator(js-urile in app/, css-urile in css/, restul resurselor in assets/)
+2. Fiind incarcate in memorie sunt date foarte rapid clientilor ce se conecteaza la server.
+3. Orice modificare a oricarei resurse trebuie sa aduca dupa sine si comanda "npm run"
+
+Fisierul server.js din proiect contine logica serverului Node.js.
+Fisierul index.html contine frontend-ul html, baza logicii pentru chat, cat si declararea diverselor variabile globale(player, otherPlayers[]);
+Fisierul app/main.js contine logica Three.js.
+Fisierul app/scripts/cube/mybox.js contine logica jucatorului (aka modelului de cub).
+Fisierul app/scripts/camera/cameraScript.js contine logica camerei.
+
+Logica evenimentelor este urmatoarea:
+
+1. La conectarea unui client, fiecare client isi primeste id-ul de la server prin evenimentul connectionId.
+2. La primirea unui mesaj prin evenimentul message, se adauga mesajul in chatbox.
+3. La trimiterea unui mesaj se trimite si id-ul clientului care a trimis mesajul pe langa mesajul propriu zis.
+Orice mesaj trimis prin message se trimite la toti ceilalti clienti (niciodata conexiunii curente).
+
+4. Dupa ce se initializeaza jucatorul, acesta declanseaza evenimentul playerMeshCreate si trimite la server detaliile sale. Serverul ii trimite intai detaliile jucatorilor deja conectati la server si apoi il adauga la lista de jucatori curenti. Dupa ce realizeaza acest lucru, serverul trimite celorlalti jucatori detaliile noului jucator.
+5. La fiecare miscare, jucatorul curent ar trebuii sa declanseze evenimentul playerMove cu noile sale detalii (pozitie, rotatie, scalare) astfel incat restul jucatorilor sa isi poata updata entitatile lor. (exemplu in mybox.js)
+6. La deconectare, serverul trimite tuturor jucatorilor id-ul jucatorului care a iesit pentru stergerea sa din variabila otherPlayers si din scena 3d.
+
+Variabilele globale din index.html (iosocket, player si otherPlayers) sunt folosite in tot restul aplicatiei. Mare grija la modificarea lor.
+
+Daca aveti modificari interesante, faceti un pull request!
+
+Floris.
