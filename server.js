@@ -9,51 +9,51 @@ function isDirectory(fname){
 }
 
 // load up all resources statically
-var html = fs.readFileSync(__dirname + '/index.html');
+var html = fs.readFileSync(_path.normalize(__dirname + '/index.html'));
 
 var jsFiles = [];
-wrench.readdirRecursive(__dirname + '/app', function(error, curFiles) {
+wrench.readdirRecursive(_path.normalize(__dirname + '/app'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
             if(curFiles[i].slice( -2 ) == 'js') {
                 console.log("Loading "+__dirname+"/app/"+curFiles[i]);
-                jsFiles["/app/"+curFiles[i]]=fs.readFileSync(__dirname+"/app/"+curFiles[i]);
+                jsFiles[_path.normalize("/app/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/app/"+curFiles[i]));
             }
         }
     }
 });
 
 var cssFiles = [];
-wrench.readdirRecursive(__dirname + '/css', function(error, curFiles) {
+wrench.readdirRecursive(_path.normalize(__dirname + '/css'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
             if(curFiles[i].slice( -3 ) == 'css') {
                 console.log("Loading "+__dirname+"/css/"+curFiles[i]);
-                cssFiles["/css/"+curFiles[i]]=fs.readFileSync(__dirname+"/css/"+curFiles[i]);
+                cssFiles[_path.normalize("/css/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/css/"+curFiles[i]));
             }
         }
     }
 });
 
 var imgFiles = [];
-wrench.readdirRecursive(__dirname + '/img', function(error, curFiles) {
+wrench.readdirRecursive(_path.normalize(__dirname + '/img'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
             if(curFiles[i].slice( -3 ) == 'png') {
                 console.log("Loading "+__dirname+"/img/"+curFiles[i]);
-                imgFiles["/img/"+curFiles[i]]=fs.readFileSync(__dirname+"/img/"+curFiles[i]);
+                imgFiles[_path.normalize("/img/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/img/"+curFiles[i]));
             }
         }
     }
 });
 
 var assFiles = [];
-wrench.readdirRecursive(__dirname + '/assets', function(error, curFiles) {
+wrench.readdirRecursive(_path.normalize(__dirname + '/assets'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
-            if(!isDirectory("/assets/"+curFiles[i])) {
-                console.log("Loading "+__dirname+"/assets/"+curFiles[i]);
-                assFiles["/assets/"+curFiles[i]]=fs.readFileSync(__dirname+"/assets/"+curFiles[i]);
+            if(!isDirectory(_path.normalize("/assets/"+curFiles[i]))) {
+                console.log("Loading "+_path.normalize(__dirname+"/assets/"+curFiles[i]));
+                assFiles[_path.normalize("/assets/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/assets/"+curFiles[i]));
             }
         }
     }
@@ -64,26 +64,26 @@ var server = http.createServer(function(req, res) {
     // img first
     if(req.url.slice( -3 ) == 'png') {
         res.writeHead(200, {"Content-Type": "image/png"});
-        res.write(imgFiles[req.url]);
+        res.write(imgFiles[_path.normalize(req.url)]);
 
     }
 
     // assets
     if(req.url.indexOf("/assets/")==0) {
         res.writeHead(200);
-        res.write(assFiles[req.url]);
+        res.write(assFiles[_path.normalize(req.url)]);
     }
 
     // css
     if(req.url.slice( -3 ) == 'css') {
         res.writeHead(200, {"Content-Type": "text/css"});
-        res.write(cssFiles[req.url]);
+        res.write(cssFiles[_path.normalize(req.url)]);
     }
     // js
     if(req.url.slice( -2 ) == 'js') {
 
         res.writeHead(200, {"Content-Type": "text/js"});
-        res.write(jsFiles[req.url]);
+        res.write(jsFiles[_path.normalize(req.url)]);
     }
 
     if(req.url == '/') {
