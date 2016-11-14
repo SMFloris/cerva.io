@@ -16228,24 +16228,24 @@ __class__ = function(a, b) {
             d.rotation.y -= .002 * e, c.rotation.x -= .002 * f, c.rotation.x = Math.max(-m, Math.min(m, c.rotation.x));
         }
     }, o = function(a) {
-        switch (l("inside pointer lock controls onKeyDown " + a.keyCode), a.keyCode) {
+        switch (a.keyCode) {
           case 38:
-          case 87:
+          case 87: //w
             e = !0;
             break;
 
           case 37:
-          case 65:
+          case 65: //a
             g = !0;
             break;
 
           case 40:
-          case 83:
+          case 83: //s
             f = !0;
             break;
 
           case 39:
-          case 68:
+          case 68: //d
             h = !0;
             break;
 

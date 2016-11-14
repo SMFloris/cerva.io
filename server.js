@@ -15,7 +15,7 @@ var jsFiles = [];
 wrench.readdirRecursive(_path.normalize(__dirname + '/app'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
-            if(curFiles[i].slice( -2 ) == 'js') {
+            if(curFiles[i].slice( -3 ) == '.js') {
                 console.log("Loading "+__dirname+"/app/"+curFiles[i]);
                 jsFiles[_path.normalize("/app/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/app/"+curFiles[i]));
             }
@@ -27,7 +27,7 @@ var cssFiles = [];
 wrench.readdirRecursive(_path.normalize(__dirname + '/css'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
-            if(curFiles[i].slice( -3 ) == 'css') {
+            if(curFiles[i].slice( -4 ) == '.css') {
                 console.log("Loading "+__dirname+"/css/"+curFiles[i]);
                 cssFiles[_path.normalize("/css/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/css/"+curFiles[i]));
             }
@@ -39,7 +39,7 @@ var imgFiles = [];
 wrench.readdirRecursive(_path.normalize(__dirname + '/img'), function(error, curFiles) {
     if(curFiles) {
         for (var i = 0; i < curFiles.length; i++) {
-            if(curFiles[i].slice( -3 ) == 'png') {
+            if(curFiles[i].slice( -4 ) == '.png') {
                 console.log("Loading "+__dirname+"/img/"+curFiles[i]);
                 imgFiles[_path.normalize("/img/"+curFiles[i])]=fs.readFileSync(_path.normalize(__dirname+"/img/"+curFiles[i]));
             }
